@@ -51,7 +51,7 @@ def check_events()->list:
         
         min,max= min_max_today(coin)
         try:
-            if len(event) > 1 or (min>rial) or (max<rial):
+            if len(event) > 1 or (min or 0>rial) or (max or 0<rial):
                 min /= 10
                 max /= 10
                 now = rial / 10
