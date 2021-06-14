@@ -51,18 +51,19 @@ def check_events()->list:
         
         min,max= min_max_today(coin)
         try:
-            if len(event) > 1 or (min or 0>rial) or (max or 0<rial):
-                min /= 10
-                max /= 10
-                now = rial / 10
-                event.append("\nتغییرات قیمت امروز📊")
-                event.append("*قیمت ها به تومان میباشد")
-                event.append(f"🔴کمترین قیمت: {min:,}\n⚪️قیمت کنونی: {now:,}\n🟢بیشترین قیمت: {max:,}\n")
-                event.append(f"""💰قیمت دلاری {name}: {usd:,}
-💶قیمت دلار : {usd_rial_price}""")
-                event.append(get_growth(rial,coin))
-                event.append("\n🆔 @CryptoCurrency_Events")
-                event_list.append(event)
+            if min and max:
+                if len(event) > 1 or (min>rial) or (max<rial):
+                    min /= 10
+                    max /= 10
+                    now = rial / 10
+                    event.append("\nتغییرات قیمت امروز📊")
+                    event.append("*قیمت ها به تومان میباشد")
+                    event.append(f"🔴کمترین قیمت: {min:,}\n⚪️قیمت کنونی: {now:,}\n🟢بیشترین قیمت: {max:,}\n")
+                    event.append(f"""💰قیمت دلاری {name}: {usd:,}
+    💶قیمت دلار : {usd_rial_price}""")
+                    event.append(get_growth(rial,coin))
+                    event.append("\n🆔 @CryptoCurrency_Events")
+                    event_list.append(event)
         except:
             print("Error in finding max annd min price for today")
     if len(event_list) > 0:
