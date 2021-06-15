@@ -57,7 +57,10 @@ def min_max_today(symbol:str) ->float:
     q= f"SELECT min(rial_price),max(rial_price) FROM Prices WHERE '{begin}'  <= record AND record <= '{end}' and symbol = '{symbol}';"
     res = cursor.execute(q)
     for row in res:
-        return row
+        if row[0] and row[1]:
+            return row
+        else:
+            return (0,0)
 #کمترین و بیشترین قیمت دیروز را برمیگرداند
 def min_max_yesterday(symbol:str) ->float:
     time = datetime.now() - timedelta(1)
@@ -66,7 +69,10 @@ def min_max_yesterday(symbol:str) ->float:
     q= f"SELECT min(rial_price),max(rial_price) FROM Prices WHERE '{begin}'  <= record AND record <= '{end}' and symbol = '{symbol}';"
     res = cursor.execute(q)
     for row in res:
-        return row
+        if row[0] and row[1]:
+            return row
+        else:
+            return (0,0)
 
 #درصد رشد را محاسبه میکند
 def growth(day:int,price:float,symbol:str) -> float:
