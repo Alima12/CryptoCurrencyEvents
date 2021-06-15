@@ -50,22 +50,20 @@ def check_events()->list:
                 event.append(f"🔔🟢بیشترین قیمت در  {period} روز اخیر")
         
         min,max= min_max_today(coin)
-        try:
-            if min and max:
-                if len(event) > 1 or (min>rial) or (max<rial):
-                    min /= 10
-                    max /= 10
-                    now = rial / 10
-                    event.append("\nتغییرات قیمت امروز📊")
-                    event.append("*قیمت ها به تومان میباشد")
-                    event.append(f"🔴کمترین قیمت: {min:,}\n⚪️قیمت کنونی: {now:,}\n🟢بیشترین قیمت: {max:,}\n")
-                    event.append(f"""💰قیمت دلاری {name}: {usd:,}
-    💶قیمت دلار : {usd_rial_price}""")
-                    event.append(get_growth(rial,coin))
-                    event.append("\n🆔 @CryptoCurrency_Events")
-                    event_list.append(event)
-        except:
-            print("Error in finding max annd min price for today")
+
+        if len(event) > 1 or (min>rial) or (max<rial):
+            min /= 10
+            max /= 10
+            now = rial / 10
+            event.append("\nتغییرات قیمت امروز📊")
+            event.append("*قیمت ها به تومان میباشد")
+            event.append(f"🔴کمترین قیمت: {min:,}\n⚪️قیمت کنونی: {now:,}\n🟢بیشترین قیمت: {max:,}\n")
+            event.append(f"""💰قیمت دلاری {name}: {usd:,}
+💶قیمت دلار : {usd_rial_price}""")
+            event.append(get_growth(rial,coin))
+            event.append("\n🆔 @CryptoCurrency_Events")
+            event_list.append(event)
+
     if len(event_list) > 0:
         return event_list
 
@@ -84,10 +82,9 @@ def check_events()->list:
 
 def set_price()->list:
     events = check_events()
-    insert("TRX",tron_usd,tron_rial)
-    insert("DOGECOIN",doge_usd,doge_rial)
-    insert("BITCOIN",bitcoin_usd,bitcoin_rial)
-
+    for coin in Coins.keys():
+        this = Coins[coin]
+        insert(coin,this["usd"],this["rial"])
 
     if events:
         return events
@@ -127,8 +124,6 @@ if events:
     for event in events:
         message = "\n".join(event)
         send_notification(message)
-else:
-    print("no Changes!.")
 
 
 
