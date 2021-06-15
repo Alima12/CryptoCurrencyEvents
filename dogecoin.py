@@ -1,12 +1,19 @@
 from requests import get
 from bs4 import BeautifulSoup
+from usd_rial import exchange
 
-def doge_price_now():
-    url = "https://www.tgju.org/profile/crypto-dogecoin"
+
+def doge_price_now()-> tuple:
+    url = "https://arzdigital.com/coins/dogecoin/"
     response = get(url)
     soup = BeautifulSoup(response.content,"html.parser")
-    selected_area = soup.select("#main > div.stocks-profile > div.fs-row.bootstrap-fix.widgets.full-w-set > div > div.tgju-widgets-block.col-md-12.col-lg-4.tgju-widgets-block-bottom-unset.overview-first-block > div > div:nth-child(1) > div > div.tables-default.normal > table > tbody > tr:nth-child(2) > td.text-left")
-    doge_rial = int(selected_area[0].text.replace(',',''))
-    selected_area = soup.select("#main > div.stocks-profile > div.stocks-header > div.stocks-header-main > div > div.fs-cell.fs-xl-3.fs-lg-3.fs-md-6.fs-sm-12.fs-xs-12.top-header-item-block-2.mobile-top-item-hide > div > div.line.clearfix.mobile-hide-block > span.value > span:nth-child(1)")
-    doge_usd = float(selected_area[0].text)
-    return doge_rial,doge_usd
+    result = soup.select("#coin-details-page > section.arz-coin-page-body > div.arz-coin-page-data > div.arz-row-sb.arz-coin-page-data__gen-info > div:nth-child(2) > div.arz-row.arz-coin-page-data__info > div.arz-col-12.arz-col-sm-6 > div.arz-coin-page-data__coin-price-box > div:nth-child(2) > div.arz-coin-page-data__coin-price.coinPrice.pulser")
+    usd_rial_price = exchange(1)
+    doge_usd = float(result[0].text.replace("$",""))
+    doge_rial = round(doge_usd*usd_rial_price,2)
+    return (doge_rial,doge_usd)
+
+
+
+if __name__ == "__main__":
+    print(doge_price_now())
